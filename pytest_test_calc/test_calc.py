@@ -1,5 +1,16 @@
 import pytest
+import yaml
 from test_calc.calc import Calclator
+
+with open('C:\\Users\zhangcaiju_v\PycharmProjects\learning\Project\\test_calc\datas.yml', encoding='utf-8') as f:
+    datas = yaml.safe_load(f)['datas']
+    add_datas = datas['jia_datas']
+    jian_datas = datas['jian_datas']
+    cheng_datas = datas['cheng_datas']
+    chu_datas = datas['chu_datas']
+    print(add_datas)
+    myid = datas['myid']
+    print(myid)
 
 
 class TestCalc:
@@ -18,26 +29,36 @@ class TestCalc:
         print("测试结束")
 
     @pytest.mark.jia
-    def test_jia(self):
+    @pytest.mark.parametrize('a,b,excepted', add_datas, ids=myid)
+    def test_jia(self, a, b, excepted):
         # calc = Calclator()
-        result = self.calc.jia(1,2)
-        print("1+2 = 3")
-        assert 3 == result
+        result = self.calc.jia(a, b)
+        if isinstance(result, float):
+            result = round(result, 2)
+        print("加法计算")
+        assert excepted == result
 
-    def test_jian(self):
+    @pytest.mark.parametrize('a,b,excepted', jian_datas, ids=myid)
+    def test_jian(self, a, b, excepted):
         # calc = Calclator()
-        result = self.calc.jian(2,1)
-        print("2-1 = 1")
-        assert 1 == result
+        result = self.calc.jian(a, b)
+        if isinstance(result, float):
+            result = round(result, 2)
+        print("减法计算")
+        assert excepted == result
 
-    def test_cheng(self):
+    @pytest.mark.parametrize('a,b,excepted', cheng_datas, ids=myid)
+    def test_cheng(self, a, b, excepted):
         # calc = Calclator()
-        result = self.calc.cheng(1,2)
-        print("1*2 = 2")
-        assert 2 == result
+        result = self.calc.cheng(a, b)
+        if isinstance(result, float):
+            result = round(result, 2)
+        print("乘法计算")
+        assert excepted == result
 
-    def test_chu(self):
+    @pytest.mark.parametrize('a,b,excepted', chu_datas, ids=myid)
+    def test_chu(self, a, b, excepted):
         # calc = Calclator()
-        result = self.calc.chu(2,1)
-        print("2/1 = 2")
-        assert 2 == result
+        result = self.calc.chu(a, b)
+        print("除法计算")
+        assert excepted == result
